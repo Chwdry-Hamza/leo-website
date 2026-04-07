@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO - Delete Account</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #5b9bd5;
+            --bg-dark: #0a0e1a;
+            --text-primary: #ffffff;
+            --text-secondary: #8b92ab;
+            --border-color: rgba(91, 155, 213, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --danger: #e74c3c;
+            --danger-light: rgba(231, 76, 60, 0.1);
+            --danger-border: rgba(231, 76, 60, 0.2);
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        header { padding: 30px 0; display: flex; align-items: center; }
+        header a { text-decoration: none; display: flex; align-items: center; gap: 14px; }
+        header img { width: 48px; height: 48px; border-radius: 10px; }
+        header span { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: 4px; }
+        .content { padding: 40px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; margin-bottom: 60px; }
+        h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+        .subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 40px; }
+        h2 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--primary-color); }
+        p, li { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px; }
+        ul, ol { padding-left: 24px; margin-bottom: 16px; }
+        ol li { margin-bottom: 8px; }
+        .warning-box {
+            background: var(--danger-light);
+            border: 1px solid var(--danger-border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        .warning-box p { color: #e8a09a; margin-bottom: 0; }
+        .warning-box strong { color: var(--danger); }
+        .delete-form {
+            margin-top: 32px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+        }
+        .form-group select { cursor: pointer; }
+        .form-group select option { background: var(--bg-dark); color: var(--text-primary); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-secondary); }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--danger);
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1.6;
+        }
+        .delete-btn {
+            padding: 16px 32px;
+            background: var(--danger);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, opacity 0.3s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+        .delete-btn:hover { background: #c0392b; }
+        .delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 24px;
+        }
+        .form-success h3 { font-size: 20px; margin-bottom: 12px; color: var(--primary-color); }
+        .form-success p { color: var(--text-secondary); }
+        footer { padding: 40px 0; text-align: center; border-top: 1px solid rgba(91, 155, 213, 0.05); }
+        .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-link { font-size: 14px; color: var(--text-secondary); text-decoration: none; transition: color 0.3s; }
+        .footer-link:hover { color: var(--primary-color); }
+        .copyright { font-size: 14px; color: var(--text-secondary); }
+        @media (max-width: 768px) {
+            .content { padding: 24px; }
+            h1 { font-size: 28px; }
+            .delete-form { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header><a href="index.html"><img src="images/Logo.jpeg" alt="LEO"><span>LEO</span></a></header>
+
+        <div class="content">
+            <h1>Delete Account</h1>
+            <p class="subtitle">Request permanent deletion of your LEO account and all associated data.</p>
+
+            <h2>Before You Delete</h2>
+            <p>Please review the following information before submitting your account deletion request:</p>
+
+            <div class="warning-box">
+                <p><strong>Warning:</strong> Account deletion is permanent and cannot be undone. All your data, transaction history, wallet information, and card details will be permanently removed from our systems.</p>
+            </div>
+
+            <h2>What Gets Deleted</h2>
+            <ul>
+                <li>Your account profile and personal information</li>
+                <li>Transaction history and records</li>
+                <li>Wallet data and saved addresses</li>
+                <li>Card information (physical and virtual)</li>
+                <li>Notification preferences and settings</li>
+                <li>Waitlist and subscription data</li>
+            </ul>
+
+            <h2>What You Should Do First</h2>
+            <ol>
+                <li><strong>Withdraw all funds</strong> — Transfer any remaining digital assets from your LEO wallet to an external wallet before requesting deletion.</li>
+                <li><strong>Save transaction records</strong> — Download or screenshot any transaction history you may need for tax or personal records.</li>
+                <li><strong>Cancel active cards</strong> — If you have any active physical or virtual cards, ensure they are deactivated.</li>
+            </ol>
+
+            <h2>Processing Time</h2>
+            <p>Account deletion requests are processed within <strong>30 days</strong>. During this period, your account will be deactivated. Some data may be retained for up to 90 days as required by regulatory and legal obligations.</p>
+
+            <h2>Submit Deletion Request</h2>
+
+            <div class="delete-form" id="deleteForm">
+                <div class="form-group">
+                    <label for="email">Email Address (registered with LEO)</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Reason for Deletion (optional)</label>
+                    <select id="reason">
+                        <option value="">Select a reason...</option>
+                        <option value="no-longer-needed">I no longer need this service</option>
+                        <option value="privacy">Privacy concerns</option>
+                        <option value="switching">Switching to another service</option>
+                        <option value="dissatisfied">Not satisfied with the service</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="otherReasonGroup" style="display:none;">
+                    <label for="otherReason">Please specify</label>
+                    <textarea id="otherReason" placeholder="Tell us more..."></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="confirm1">
+                    <label for="confirm1">I understand that all my data, including wallet information, transaction history, and card details will be permanently deleted.</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="confirm2">
+                    <label for="confirm2">I have withdrawn all funds from my LEO wallet and understand that any remaining balance will be forfeited.</label>
+                </div>
+
+                <button class="delete-btn" id="deleteBtn" disabled>Request Account Deletion</button>
+            </div>
+
+            <div class="form-success" id="formSuccess">
+                <h3>Deletion Request Submitted</h3>
+                <p>We have received your account deletion request. You will receive a confirmation email shortly. Your account will be deactivated immediately and permanently deleted within 30 days.</p>
+                <p style="margin-top: 16px;">If you did not make this request or wish to cancel, please contact us at <strong>support@leo.financial</strong> within 30 days.</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms-conditions.html" class="footer-link">Terms & Conditions</a>
+                <a href="cookie-policy.html" class="footer-link">Cookie Policy</a>
+            </div>
+            <p class="copyright">&copy; 2026 LEO. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const reason = document.getElementById('reason');
+        const otherGroup = document.getElementById('otherReasonGroup');
+        const confirm1 = document.getElementById('confirm1');
+        const confirm2 = document.getElementById('confirm2');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const email = document.getElementById('email');
+
+        reason.addEventListener('change', () => {
+            otherGroup.style.display = reason.value === 'other' ? 'block' : 'none';
+        });
+
+        function checkForm() {
+            deleteBtn.disabled = !(confirm1.checked && confirm2.checked && email.value.trim());
+        }
+
+        confirm1.addEventListener('change', checkForm);
+        confirm2.addEventListener('change', checkForm);
+        email.addEventListener('input', checkForm);
+
+        deleteBtn.addEventListener('click', () => {
+            document.getElementById('deleteForm').style.display = 'none';
+            document.getElementById('formSuccess').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
