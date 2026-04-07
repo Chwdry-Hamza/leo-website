@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEO - Your digital wallet for sending, receiving and spending digital assets">
+    <title>LEO - Launching Soon</title>
+
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="apple-touch-icon" href="images/Logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #5b9bd5;
+            --primary-dark: #4080c0;
+            --primary-light: #7cb8e8;
+            --bg-dark: #0a0e1a;
+            --bg-darker: #050810;
+            --text-primary: #ffffff;
+            --text-secondary: #8b92ab;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(91, 155, 213, 0.15);
+            --glow-primary: rgba(91, 155, 213, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        [dir="rtl"] { direction: rtl; }
+
+        .bg-gradient {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at top, rgba(91, 155, 213, 0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at bottom, rgba(91, 155, 213, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--glow-primary);
+            top: -250px;
+            right: -250px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--glow-primary);
+            bottom: -200px;
+            left: -200px;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(91, 155, 213, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(91, 155, 213, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-left: 14px;
+            letter-spacing: 4px;
+        }
+
+        [dir="rtl"] .logo-text { margin-left: 0; margin-right: 14px; }
+
+        .header-right { display: flex; align-items: center; }
+
+        .language-selector { position: relative; }
+
+        .language-btn {
+            padding: 8px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
+            height: 36px;
+        }
+
+        .language-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(91, 155, 213, 0.05);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 14, 26, 0.98);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 160px;
+            display: none;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        [dir="rtl"] .language-dropdown { right: auto; left: 0; }
+
+        .language-dropdown.active {
+            display: block;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        .language-option {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .language-option:hover {
+            background: rgba(91, 155, 213, 0.1);
+            color: var(--text-primary);
+        }
+
+        .language-option.active {
+            background: rgba(91, 155, 213, 0.15);
+            color: var(--primary-color);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0 0;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-badge svg { width: 20px; height: 20px; fill: var(--primary-color); }
+
+        h1 {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .logo-container {
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 80px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .logo-showcase {
+            position: relative;
+            width: 100%;
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .logo-showcase img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(91, 155, 213, 0.3), 0 0 120px rgba(91, 155, 213, 0.1);
+        }
+
+        .features {
+            margin: 80px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 32px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            border-color: var(--primary-color);
+            background: rgba(91, 155, 213, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: rgba(91, 155, 213, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--primary-color);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); }
+        .feature-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+        .notify-section {
+            margin: 80px 0;
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .notify-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(91, 155, 213, 0.03) 0%, transparent 50%);
+            border-radius: 24px;
+            pointer-events: none;
+        }
+
+        .notify-content { position: relative; z-index: 1; }
+        .notify-title { font-size: 32px; font-weight: 800; margin-bottom: 16px; }
+        .notify-desc { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; }
+
+        .notify-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 16px;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            color: var(--text-primary) !important;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .email-input::placeholder { color: var(--text-secondary); }
+
+        .email-input:focus {
+            border-color: var(--primary-color) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            box-shadow: 0 0 0 4px rgba(91, 155, 213, 0.1) !important;
+        }
+
+        .email-input:-webkit-autofill,
+        .email-input:-webkit-autofill:hover,
+        .email-input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.03) inset !important;
+            -webkit-text-fill-color: #e2e8f0 !important;
+            border: 1px solid var(--primary-color) !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .submit-btn {
+            padding: 18px 40px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover { background: var(--primary-light); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .form-success {
+            display: none;
+            color: var(--primary-color);
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid rgba(91, 155, 213, 0.05);
+            margin-top: 100px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover { color: var(--primary-color); }
+        .copyright { font-size: 14px; color: var(--text-secondary); }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .logo-image { width: 48px; height: 48px; }
+            .logo-text { font-size: 22px; }
+            h1 { font-size: 48px; }
+            .hero-subtitle { font-size: 18px; }
+            .features { grid-template-columns: 1fr; gap: 16px; }
+            .notify-section { padding: 40px 24px; }
+            .notify-title { font-size: 24px; }
+            .notify-form { flex-direction: column; }
+            .submit-btn { width: 100%; }
+            .logo-container { max-width: 200px; margin-bottom: 60px; }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 20px 0; }
+            .logo-image { width: 40px; height: 40px; }
+            .logo-text { font-size: 18px; letter-spacing: 3px; }
+            .language-btn { font-size: 10px; padding: 6px 14px; height: 32px; }
+            h1 { font-size: 36px; }
+            .hero-subtitle { font-size: 16px; }
+            .hero { padding: 40px 0 30px; }
+            .logo-container { max-width: 160px; }
+        }
+
+        .language-dropdown::-webkit-scrollbar { width: 6px; }
+        .language-dropdown::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 3px; }
+        .language-dropdown::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <img src="images/Logo.jpeg" alt="LEO" class="logo-image">
+                <span class="logo-text">LEO</span>
+            </div>
+            <div class="header-right">
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn">
+                        <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px;flex-shrink:0;">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span id="currentLang">English</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown"></div>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span id="t-launching_soon">LAUNCHING SOON</span>
+            </div>
+            <h1 id="t-hero_title">Your Digital<br>Wallet</h1>
+            <p class="hero-subtitle" id="t-hero_subtitle">Send, receive, swap and spend your digital assets with LEO. A secure next-generation wallet with built-in card management.</p>
+        </section>
+
+        <div class="logo-container">
+            <div class="logo-showcase">
+                <img src="images/Logo.jpeg" alt="LEO" loading="lazy">
+            </div>
+        </div>
+
+        <section class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                </div>
+                <div class="feature-title" id="t-feature1_title">Card Management</div>
+                <div class="feature-desc" id="t-feature1_desc">Apply for physical and virtual cards to spend anywhere</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+                </div>
+                <div class="feature-title" id="t-feature2_title">Instant Transfers</div>
+                <div class="feature-desc" id="t-feature2_desc">Send and receive assets globally in seconds</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                </div>
+                <div class="feature-title" id="t-feature3_title">Secure Wallet</div>
+                <div class="feature-desc" id="t-feature3_desc">Bank-grade encryption and passcode protection</div>
+            </div>
+        </section>
+
+        <section class="notify-section">
+            <div class="notify-content">
+                <h2 class="notify-title" id="t-notify_title">Join the Waitlist</h2>
+                <p class="notify-desc" id="t-notify_desc">Get early access to LEO. Be among the first to experience the future of digital payments.</p>
+                <form class="notify-form" id="notifyForm">
+                    <input type="email" id="emailInput" class="email-input" placeholder="Your email address" required>
+                    <button type="submit" class="submit-btn" id="submitBtn">Join Waitlist</button>
+                </form>
+                <div class="form-success" id="formSuccess"></div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms-conditions.html" class="footer-link">Terms & Conditions</a>
+                <a href="cookie-policy.html" class="footer-link">Cookie Policy</a>
+            </div>
+            <p class="copyright" id="t-copyright">&copy; 2026 LEO. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                launching_soon: 'LAUNCHING SOON',
+                hero_title: 'Your Digital<br>Wallet',
+                hero_subtitle: 'Send, receive, swap and spend your digital assets with LEO. A secure next-generation wallet with built-in card management.',
+                feature1_title: 'Card Management',
+                feature1_desc: 'Apply for physical and virtual cards to spend anywhere',
+                feature2_title: 'Instant Transfers',
+                feature2_desc: 'Send and receive assets globally in seconds',
+                feature3_title: 'Secure Wallet',
+                feature3_desc: 'Bank-grade encryption and passcode protection',
+                notify_title: 'Join the Waitlist',
+                notify_desc: 'Get early access to LEO. Be among the first to experience the future of digital payments.',
+                email_placeholder: 'Your email address',
+                submit_btn: 'Join Waitlist',
+                copyright: 'All rights reserved.',
+                success_msg: "Welcome! You're on the waitlist. We'll notify you soon.",
+            },
+            es: {
+                launching_soon: 'LANZAMIENTO PRONTO',
+                hero_title: 'Tu Billetera<br>Digital',
+                hero_subtitle: 'Envía, recibe, intercambia y gasta tus activos digitales con LEO. Una billetera segura de próxima generación con gestión de tarjetas integrada.',
+                feature1_title: 'Gestión de Tarjetas',
+                feature1_desc: 'Solicita tarjetas físicas y virtuales para gastar en cualquier lugar',
+                feature2_title: 'Transferencias Instantáneas',
+                feature2_desc: 'Envía y recibe activos globalmente en segundos',
+                feature3_title: 'Billetera Segura',
+                feature3_desc: 'Cifrado de grado bancario y protección con contraseña',
+                notify_title: 'Únete a la Lista de Espera',
+                notify_desc: 'Obtén acceso anticipado a LEO. Sé de los primeros en experimentar el futuro de los pagos digitales.',
+                email_placeholder: 'Tu dirección de correo',
+                submit_btn: 'Unirse a la Lista',
+                copyright: 'Todos los derechos reservados.',
+                success_msg: '¡Gracias! Te notificaremos cuando lancemos.',
+            },
+            fr: {
+                launching_soon: 'LANCEMENT BIENTÔT',
+                hero_title: 'Votre Portefeuille<br>Numérique',
+                hero_subtitle: 'Envoyez, recevez, échangez et dépensez vos actifs numériques avec LEO. Un portefeuille sécurisé de nouvelle génération avec gestion de cartes intégrée.',
+                feature1_title: 'Gestion des Cartes',
+                feature1_desc: 'Demandez des cartes physiques et virtuelles pour dépenser partout',
+                feature2_title: 'Transferts Instantanés',
+                feature2_desc: 'Envoyez et recevez des actifs dans le monde entier en secondes',
+                feature3_title: 'Portefeuille Sécurisé',
+                feature3_desc: 'Chiffrement de niveau bancaire et protection par code',
+                notify_title: "Rejoignez la Liste d'Attente",
+                notify_desc: 'Obtenez un accès anticipé à LEO. Soyez parmi les premiers à découvrir le futur des paiements numériques.',
+                email_placeholder: 'Votre adresse e-mail',
+                submit_btn: 'Rejoindre la Liste',
+                copyright: 'Tous droits réservés.',
+                success_msg: 'Merci! Nous vous préviendrons lors du lancement.',
+            },
+            de: {
+                launching_soon: 'STARTET BALD',
+                hero_title: 'Ihre Digitale<br>Geldbörse',
+                hero_subtitle: 'Senden, empfangen, tauschen und ausgeben Sie Ihre digitalen Vermögenswerte mit LEO. Eine sichere Geldbörse der nächsten Generation mit integrierter Kartenverwaltung.',
+                feature1_title: 'Kartenverwaltung',
+                feature1_desc: 'Beantragen Sie physische und virtuelle Karten zum überall Bezahlen',
+                feature2_title: 'Sofortige Überweisungen',
+                feature2_desc: 'Senden und empfangen Sie Vermögenswerte weltweit in Sekunden',
+                feature3_title: 'Sichere Geldbörse',
+                feature3_desc: 'Bankverschlüsselung und Passcode-Schutz',
+                notify_title: 'Tritt der Warteliste bei',
+                notify_desc: 'Erhalten Sie frühzeitigen Zugang zu LEO. Gehören Sie zu den Ersten, die die Zukunft digitaler Zahlungen erleben.',
+                email_placeholder: 'Ihre E-Mail-Adresse',
+                submit_btn: 'Warteliste Beitreten',
+                copyright: 'Alle Rechte vorbehalten.',
+                success_msg: 'Danke! Wir benachrichtigen Sie beim Start.',
+            },
+            ar: {
+                launching_soon: 'الإطلاق قريباً',
+                hero_title: 'محفظتك<br>الرقمية',
+                hero_subtitle: 'أرسل واستقبل وبادل وأنفق أصولك الرقمية مع LEO. محفظة آمنة من الجيل التالي مع إدارة بطاقات مدمجة.',
+                feature1_title: 'إدارة البطاقات',
+                feature1_desc: 'تقدم بطلب للحصول على بطاقات فعلية وافتراضية للإنفاق في أي مكان',
+                feature2_title: 'تحويلات فورية',
+                feature2_desc: 'أرسل واستقبل الأصول عالمياً في ثوانٍ',
+                feature3_title: 'محفظة آمنة',
+                feature3_desc: 'تشفير بمستوى مصرفي وحماية برمز المرور',
+                notify_title: 'انضم إلى قائمة الانتظار',
+                notify_desc: 'احصل على وصول مبكر إلى LEO. كن من أوائل من يختبرون مستقبل المدفوعات الرقمية.',
+                email_placeholder: 'عنوان بريدك الإلكتروني',
+                submit_btn: 'انضم للقائمة',
+                copyright: 'جميع الحقوق محفوظة.',
+                success_msg: 'شكراً! سنخبرك عند الإطلاق.',
+            },
+            tr: {
+                launching_soon: 'YAKINDA BAŞLIYOR',
+                hero_title: 'Dijital<br>Cüzdanınız',
+                hero_subtitle: 'LEO ile dijital varlıklarınızı gönderin, alın, takas edin ve harcayın. Dahili kart yönetimi ile güvenli yeni nesil cüzdan.',
+                feature1_title: 'Kart Yönetimi',
+                feature1_desc: 'Her yerde harcama yapmak için fiziksel ve sanal kart başvurusu yapın',
+                feature2_title: 'Anında Transferler',
+                feature2_desc: 'Saniyeler içinde küresel olarak varlık gönderin ve alın',
+                feature3_title: 'Güvenli Cüzdan',
+                feature3_desc: 'Bankacılık düzeyinde şifreleme ve şifre koruması',
+                notify_title: 'Bekleme Listesine Katıl',
+                notify_desc: "LEO'ya erken erişim elde edin. Dijital ödemelerin geleceğini ilk deneyenler arasında olun.",
+                email_placeholder: 'E-posta adresiniz',
+                submit_btn: 'Listeye Katıl',
+                copyright: 'Tüm hakları saklıdır.',
+                success_msg: 'Hoş geldiniz! Bekleme listesindesiniz.',
+            },
+            hi: {
+                launching_soon: 'जल्द शुरू हो रहा है',
+                hero_title: 'आपका डिजिटल<br>वॉलेट',
+                hero_subtitle: 'LEO के साथ अपनी डिजिटल संपत्ति भेजें, प्राप्त करें, स्वैप करें और खर्च करें। बिल्ट-इन कार्ड प्रबंधन के साथ एक सुरक्षित अगली पीढ़ी का वॉलेट।',
+                feature1_title: 'कार्ड प्रबंधन',
+                feature1_desc: 'कहीं भी खर्च करने के लिए भौतिक और वर्चुअल कार्ड के लिए आवेदन करें',
+                feature2_title: 'तत्काल स्थानांतरण',
+                feature2_desc: 'सेकंडों में विश्व स्तर पर संपत्ति भेजें और प्राप्त करें',
+                feature3_title: 'सुरक्षित वॉलेट',
+                feature3_desc: 'बैंक-ग्रेड एन्क्रिप्शन और पासकोड सुरक्षा',
+                notify_title: 'प्रतीक्षा सूची में शामिल हों',
+                notify_desc: 'LEO तक जल्दी पहुँच प्राप्त करें। डिजिटल भुगतान के भविष्य का अनुभव करने वाले पहले लोगों में शामिल हों।',
+                email_placeholder: 'आपका ईमेल पता',
+                submit_btn: 'सूची में शामिल हों',
+                copyright: 'सर्वाधिकार सुरक्षित।',
+                success_msg: 'धन्यवाद! हम लॉन्च पर आपको सूचित करेंगे।',
+            },
+        };
+
+        const languageNames = {
+            en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch',
+            ar: 'العربية', tr: 'Türkçe', hi: 'हिन्दी'
+        };
+
+        // Get language from cookie
+        function getLang() {
+            const match = document.cookie.match(/(?:^|; )lang=([^;]*)/);
+            const lang = match ? match[1] : 'en';
+            return translations[lang] ? lang : 'en';
+        }
+
+        let currentLang = getLang();
+
+        function applyTranslations(lang) {
+            const t = translations[lang];
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            const fields = ['launching_soon','hero_title','hero_subtitle','feature1_title','feature1_desc',
+                'feature2_title','feature2_desc','feature3_title','feature3_desc','notify_title','notify_desc'];
+            fields.forEach(f => {
+                const el = document.getElementById('t-' + f);
+                if (el) el.innerHTML = t[f];
+            });
+
+            document.getElementById('emailInput').placeholder = t.email_placeholder;
+            document.getElementById('submitBtn').textContent = t.submit_btn;
+            document.getElementById('t-copyright').innerHTML = '&copy; ' + new Date().getFullYear() + ' LEO. ' + t.copyright;
+            document.getElementById('currentLang').textContent = languageNames[lang];
+
+            // Update dropdown active state
+            document.querySelectorAll('.language-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.lang === lang);
+            });
+        }
+
+        // Build language dropdown
+        const dropdown = document.getElementById('languageDropdown');
+        Object.entries(languageNames).forEach(([code, name]) => {
+            const div = document.createElement('div');
+            div.className = 'language-option' + (code === currentLang ? ' active' : '');
+            div.dataset.lang = code;
+            div.textContent = name;
+            div.addEventListener('click', () => {
+                currentLang = code;
+                document.cookie = 'lang=' + code + '; path=/; max-age=' + (30*24*60*60);
+                applyTranslations(code);
+                dropdown.classList.remove('active');
+            });
+            dropdown.appendChild(div);
+        });
+
+        applyTranslations(currentLang);
+
+        // Language toggle
+        document.getElementById('languageBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('languageBtn').contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Form handler - stores in localStorage + shows success
+        document.getElementById('notifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const btn = document.getElementById('submitBtn');
+            const t = translations[currentLang];
+
+            // Save to localStorage
+            const subs = JSON.parse(localStorage.getItem('leo_waitlist') || '[]');
+            if (!subs.includes(email)) {
+                subs.push(email);
+                localStorage.setItem('leo_waitlist', JSON.stringify(subs));
+            }
+
+            document.getElementById('emailInput').value = '';
+            const successEl = document.getElementById('formSuccess');
+            successEl.textContent = t.success_msg;
+            successEl.style.display = 'block';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.disabled = false;
+                successEl.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
