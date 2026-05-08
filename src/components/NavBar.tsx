@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavBar: React.FC = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[linear-gradient(90deg,#051221_0%,#051221_50%,#0e1d38_75%,#123a5a_100%)]">
       <div className="h-[68px] flex items-center justify-between max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 gap-3">
-        <a
-          href="#home"
+        <Link
+          to="/"
           className="inline-flex items-center gap-[10px] font-display font-bold text-[18px] tracking-[-0.01em] text-fg-1 min-w-0"
         >
           <img
@@ -13,7 +14,7 @@ const NavBar: React.FC = () => {
             alt="LEO"
             className="block w-auto h-[64px] sm:h-[80px] md:h-[90px] object-cover -my-[16px] sm:-my-[22px] md:-my-[26px] brightness-125 drop-shadow-[0_0_8px_rgba(111,227,255,0.45)]"
           />
-        </a>
+        </Link>
 
         <div className="flex items-center gap-4 shrink-0">
           <a
