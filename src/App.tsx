@@ -5,9 +5,7 @@ import HeroSection from './components/heroSection';
 import ControlSection from './components/ControlSection';
 import PaymentSection from './components/PaymentSection';
 import TransferSection from './components/TransferSection';
-import LinkedAccountsSection from './components/linkedAccountsSection';
 import CryptoSection from './components/CryptoSection';
-import EarnSection from './components/EarnSection';
 import FeaturesGrid from './components/FeaturesGrid';
 import JoinUsSection from './components/JoinUsSection';
 import CollaborationsSection from './components/CollaborationsSection';
@@ -97,9 +95,7 @@ const Landing: React.FC = () => (
     <PaymentSection />
     <CryptoTicker />
     <TransferSection />
-    <LinkedAccountsSection />
     <CryptoSection />
-    <EarnSection />
     <FeaturesGrid />
     <JoinUsSection />
     <CollaborationsSection />

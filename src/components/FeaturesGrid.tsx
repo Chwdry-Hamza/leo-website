@@ -175,10 +175,10 @@ const FeaturesGrid: React.FC = () => {
             <div className="w-10 h-10 rounded-[10px] bg-cyan-300/15 border border-cyan-300/30 inline-flex items-center justify-center mb-4">
               <SplitIcon />
             </div>
-            <h3 className={h3Cls}>Split in any currency.</h3>
+            <h3 className={h3Cls}>Spend crypto like cash, anywhere.</h3>
             <p className={`${bodyCls} mb-5`}>
-              Bills, rent, a weekend away — settle in fiat, USDC, or BTC,
-              down to the cent.
+              Tap your Leo card at any store or pay online — crypto
+              converts to fiat at checkout, automatically.
             </p>
             <div className="mt-auto flex items-center">
               <div className="flex">

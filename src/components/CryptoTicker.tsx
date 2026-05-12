@@ -8,26 +8,11 @@ type Coin = {
 };
 
 const COINS: Coin[] = [
-  { symbol: 'BTC',  price: '$64,215.30', change: '1.42%', up: true  },
-  { symbol: 'ETH',  price: '$3,182.75',  change: '0.96%', up: true  },
-  { symbol: 'USDT', price: '$1.00',      change: '0.01%', up: true  },
-  { symbol: 'XRP',  price: '$0.5214',    change: '0.63%', up: false },
-  { symbol: 'BNB',  price: '$578.40',    change: '2.11%', up: true  },
-  { symbol: 'USDC', price: '$1.00',      change: '0.00%', up: true  },
-  { symbol: 'SOL',  price: '$148.92',    change: '3.87%', up: true  },
-  { symbol: 'TRX',  price: '$0.1243',    change: '0.21%', up: false },
-  { symbol: 'DOGE', price: '$0.1587',    change: '4.22%', up: true  },
-  { symbol: 'HYPE', price: '$32.18',     change: '1.08%', up: false },
-  { symbol: 'LEO',  price: '$8.94',      change: '0.57%', up: true  },
-  { symbol: 'BCH',  price: '$412.65',    change: '1.03%', up: true  },
-  { symbol: 'ADA',  price: '$0.4571',    change: '0.84%', up: false },
-  { symbol: 'XMR',  price: '$168.32',    change: '0.72%', up: true  },
-  { symbol: 'LINK', price: '$14.58',     change: '0.33%', up: false },
-  { symbol: 'XLM',  price: '$0.1102',    change: '1.48%', up: true  },
-  { symbol: 'M',    price: '$2.34',      change: '2.17%', up: false },
-  { symbol: 'CC',   price: '$0.89',      change: '5.63%', up: true  },
-  { symbol: 'ZEC',  price: '$24.17',     change: '0.98%', up: false },
-  { symbol: 'DAI',  price: '$1.00',      change: '0.02%', up: true  },
+  { symbol: 'ETH',          price: '$3,452.12', change: '1.40%', up: true },
+  { symbol: 'TRX',          price: '$0.32',     change: '2.60%', up: true },
+  { symbol: 'USDT (TRC20)', price: '$1.00',     change: '0.00%', up: true },
+  { symbol: 'USDT (ERC20)', price: '$1.00',     change: '0.00%', up: true },
+  { symbol: 'USDC (ERC20)', price: '$1.00',     change: '0.00%', up: true },
 ];
 
 const CryptoTicker: React.FC = () => (
