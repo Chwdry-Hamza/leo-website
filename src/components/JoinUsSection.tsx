@@ -1,4 +1,5 @@
 import React from 'react';
+import { HOME_CONTENT_DEFAULTS, type HomeContent } from '@/lib/homeContent';
 
 const PHOTOS = [
   'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face',
@@ -15,7 +16,10 @@ const PHOTOS = [
   'https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=400&h=400&fit=crop&crop=face',
 ];
 
-const JoinUsSection: React.FC = () => {
+type Props = { content?: HomeContent['joinUs'] };
+
+const JoinUsSection: React.FC<Props> = ({ content }) => {
+  const c = content ?? HOME_CONTENT_DEFAULTS.joinUs;
   return (
     <section className="relative overflow-hidden pt-16 md:pt-32 pb-24 md:pb-48 bg-[#0a1527]">
       {/* Photo grid background */}
@@ -33,24 +37,31 @@ const JoinUsSection: React.FC = () => {
 
       {/* Content */}
       <div className="leo-reveal relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 text-center py-16 md:py-24">
-        <p className="font-display text-xs font-medium tracking-[0.28em] uppercase text-[#B8C8E2] mb-[22px]">
-          JOIN THE MOVEMENT
+        <p
+          data-cms-field="joinUs.eyebrow"
+          className="font-display text-xs font-medium tracking-[0.28em] uppercase text-[#B8C8E2] mb-[22px]"
+        >
+          {c.eyebrow}
         </p>
         <h2 className="font-display font-bold text-[clamp(32px,5.2vw,68px)] leading-[1.05] tracking-[-0.02em] text-white m-0 mb-5">
-          BUILT FOR <em className="not-italic text-cyan-300">WHAT'S NEXT.</em>
+          <span data-cms-field="joinUs.titleWhite">{c.titleWhite}</span>
+          <em data-cms-field="joinUs.titleAccent" className="not-italic text-cyan-300">{c.titleAccent}</em>
         </h2>
-        <p className="text-[15px] leading-[1.6] text-fg-2 text-center max-w-[520px] mx-auto mb-8">
-          The wait for finance that actually keeps up is over. Send, spend,
-          stake, swap — one app, zero friction, always-on. Built for how you
-          live now, ready for whatever comes next.
+        <p
+          data-cms-field="joinUs.subtitle"
+          data-cms-multiline
+          className="text-[15px] leading-[1.6] text-fg-2 text-center max-w-[520px] mx-auto mb-8 whitespace-pre-line"
+        >
+          {c.subtitle}
         </p>
         <a
-          href="https://apps.apple.com/app/sicash"
+          href={c.ctaUrl}
+          data-cms-href="joinUs.ctaUrl"
           target="_blank"
           rel="noopener noreferrer"
           className="group inline-flex items-center gap-2 font-sans font-semibold text-[15px] leading-none px-[22px] py-3 rounded-[10px] border border-transparent cursor-pointer bg-cyan-300 text-navy-950 transition-all duration-[180ms] ease-leo-out hover:bg-cyan-200 hover:-translate-y-px"
         >
-          GET LEO APP
+          <span data-cms-field="joinUs.ctaLabel">{c.ctaLabel}</span>
           <span className="inline-block transition-transform duration-200 ease-leo-out group-hover:translate-x-[3px]">
             →
           </span>

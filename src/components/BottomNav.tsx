@@ -1,8 +1,14 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import { HOME_CONTENT_DEFAULTS, type HomeContent } from '@/lib/homeContent';
 
-const SECTIONS = ['payment', 'transfer', 'crypto', 'earn'];
+const SECTIONS = ['payment', 'transfer', 'crypto'];
 
-const BottomNav: React.FC = () => {
+type Props = { content?: HomeContent['bottomNav'] };
+
+const BottomNav: React.FC<Props> = ({ content }) => {
+  const c = content ?? HOME_CONTENT_DEFAULTS.bottomNav;
   const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
@@ -32,16 +38,16 @@ const BottomNav: React.FC = () => {
         <div className="flex items-center justify-between px-3 py-2 w-full">
           <a href="#home" className="inline-flex items-center">
             <img
-              src="/leoLogoooo.png"
+              src={c.logoSrc}
               alt="LEO"
               className="block w-auto h-12 object-cover brightness-125 drop-shadow-[0_0_8px_rgba(111,227,255,0.45)]"
             />
           </a>
           <a
-            href="#get"
+            href={c.ctaUrl}
             className="group inline-flex items-center gap-1.5 font-sans font-semibold text-xs leading-none px-4 py-2.5 rounded-[10px] border border-transparent cursor-pointer bg-cyan-300 text-navy-950 transition-all duration-[180ms] ease-leo-out hover:bg-cyan-200 hover:-translate-y-px"
           >
-            GET LEO APP
+            {c.ctaLabel}
             <span className="inline-block transition-transform duration-200 ease-leo-out group-hover:translate-x-[3px]">
               →
             </span>
@@ -56,7 +62,7 @@ const BottomNav: React.FC = () => {
           <div className="shrink-0 -ml-[12px] lg:-ml-[24px]">
             <a href="#home" className="inline-flex items-center">
               <img
-                src="/leoLogoooo.png"
+                src={c.logoSrc} data-cms-field-parent="bottomNav.logoSrc"
                 alt="LEO"
                 className="block h-10 lg:h-16 xl:h-20 w-auto object-cover brightness-125 drop-shadow-[0_0_8px_rgba(111,227,255,0.45)]"
               />
@@ -68,15 +74,14 @@ const BottomNav: React.FC = () => {
             <NavItem icon={<CardIcon />} label="Cards" href="#payment" isActive={activeSection === 'payment'} />
             <NavItem icon={<SendIcon />} label="Transfer" href="#transfer" isActive={activeSection === 'transfer'} />
             <NavItem icon={<CryptoIcon />} label="Crypto" href="#crypto" isActive={activeSection === 'crypto'} />
-            <NavItem icon={<EarnIcon />} label="Staking" href="#earn" isActive={activeSection === 'earn'} />
           </div>
 
           {/* CTA Button — matches header NavBar style */}
           <a
-            href="#get"
+            href={c.ctaUrl}
             className="group shrink-0 inline-flex items-center gap-1.5 lg:gap-2 font-sans font-semibold text-xs lg:text-sm leading-none px-3 py-2 lg:px-[22px] lg:py-3 rounded-[10px] border border-transparent cursor-pointer bg-cyan-300 text-navy-950 transition-all duration-[180ms] ease-leo-out hover:bg-cyan-200 hover:-translate-y-px whitespace-nowrap"
           >
-            GET LEO APP
+            {c.ctaLabel}
             <span className="inline-block transition-transform duration-200 ease-leo-out group-hover:translate-x-[3px]">
               →
             </span>
@@ -167,21 +172,6 @@ const CryptoIcon: React.FC = () => (
     <line x1="11" y1="16.5" x2="11" y2="18.5" />
     <line x1="13" y1="5.5" x2="13" y2="7.5" />
     <line x1="13" y1="16.5" x2="13" y2="18.5" />
-  </svg>
-);
-
-const EarnIcon: React.FC = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-full h-full"
-  >
-    <path d="M3 17l5.5-5.5 3.5 3.5L21 6" />
-    <path d="M14.5 6H21v6.5" />
   </svg>
 );
 

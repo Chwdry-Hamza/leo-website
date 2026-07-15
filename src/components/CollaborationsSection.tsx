@@ -1,6 +1,10 @@
 import React from 'react';
+import { HOME_CONTENT_DEFAULTS, type HomeContent } from '@/lib/homeContent';
 
-const CollaborationsSection: React.FC = () => {
+type Props = { content?: HomeContent['collaborations'] };
+
+const CollaborationsSection: React.FC<Props> = ({ content }) => {
+  const c = content ?? HOME_CONTENT_DEFAULTS.collaborations;
   return (
     <section className="relative overflow-hidden pt-4 md:pt-12 pb-4 md:pb-8 bg-[#0a1527]">
       {/* Subtle light streaks - Mobile (vertical) */}
@@ -30,8 +34,8 @@ const CollaborationsSection: React.FC = () => {
       {/* Mobile Layout */}
       <div className="md:hidden relative z-10 w-full px-6">
         <h2 className="leo-reveal font-display text-2xl sm:text-3xl font-bold text-center mb-10 sm:mb-12">
-          <span className="text-white">OUR </span>
-          <em className="not-italic text-cyan-300">COLLABORATIONS</em>
+          <span data-cms-field="collaborations.headingBefore" className="text-white">{c.headingBefore}</span>
+          <em data-cms-field="collaborations.headingAccent" className="not-italic text-cyan-300">{c.headingAccent}</em>
         </h2>
 
         {/* Partner Logos - Stacked vertically */}
@@ -111,8 +115,8 @@ const CollaborationsSection: React.FC = () => {
       {/* Desktop Layout */}
       <div className="hidden md:block relative z-10 w-full max-w-[1520px] mx-auto px-6 md:px-8">
         <h2 className="leo-reveal font-display text-3xl md:text-4xl lg:text-6xl font-bold text-center mb-12 md:mb-14 lg:mb-20">
-          <span className="text-white">OUR </span>
-          <em className="not-italic text-cyan-300">COLLABORATIONS</em>
+          <span className="text-white">{c.headingBefore}</span>
+          <em className="not-italic text-cyan-300">{c.headingAccent}</em>
         </h2>
 
         {/* Partner Logos - Row 1 */}

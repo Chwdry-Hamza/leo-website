@@ -1,59 +1,25 @@
-const GA_ID = process.env.REACT_APP_GA_ID;
-const STORAGE_KEY = 'leo-cookie-consent';
+import { COOKIE_CONSENT_STORAGE_KEY } from './consent';
 
-declare global {
-  interface Window {
-    dataLayer?: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
+/**
+ * Build the inline analytics init: Consent Mode v2 default (denied),
+ * returning-visitor upgrade, the GTM `gtm.start` marker, and GA4 config.
+ *
+ * The gtag.js and gtm.js LIBRARIES are rendered separately as
+ * `<script async src>` tags (React 19 hoists them into <head>, satisfying the
+ * requirement that GA4 + GTM appear in <head> site-wide). This init script only
+ * seeds the dataLayer + consent so those libraries have what they need when
+ * they execute; it does NOT inject the libraries itself.
+ */
+export function buildAnalyticsBootstrap(ga4Id: string, gtmId: string): string {
+  return [
+    `window.dataLayer = window.dataLayer || [];`,
+    `function gtag(){dataLayer.push(arguments);}`,
+    `window.gtag = gtag;`,
+    `gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});`,
+    `try{if(localStorage.getItem('${COOKIE_CONSENT_STORAGE_KEY}')==='accepted'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}}catch(e){}`,
+    gtmId ? `window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});` : ``,
+    ga4Id ? `gtag('js',new Date());gtag('config','${ga4Id}');` : ``,
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
-
-let loaded = false;
-
-export function loadAnalytics(): void {
-  if (loaded) return;
-  if (typeof window === 'undefined') return;
-  if (!GA_ID) {
-    if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        '[analytics] REACT_APP_GA_ID is not set — skipping Google Analytics load.'
-      );
-    }
-    return;
-  }
-
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    // eslint-disable-next-line prefer-rest-params
-    (window.dataLayer as unknown[]).push(arguments);
-  };
-  window.gtag('js', new Date());
-  window.gtag('config', GA_ID);
-
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-  script.setAttribute('data-leo-analytics', 'true');
-  document.head.appendChild(script);
-
-  loaded = true;
-}
-
-export function hasConsent(): boolean {
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === 'accepted';
-  } catch {
-    return false;
-  }
-}
-
-export function setConsent(value: 'accepted' | 'declined'): void {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, value);
-  } catch {
-    /* storage unavailable — silently ignore */
-  }
-}
-
-export const CONSENT_STORAGE_KEY = STORAGE_KEY;

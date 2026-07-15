@@ -1,27 +1,28 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
-  CONSENT_STORAGE_KEY,
-  hasConsent,
-  loadAnalytics,
-  setConsent,
-} from '../lib/analytics';
+  COOKIE_CONSENT_STORAGE_KEY,
+  persistCookieConsent,
+  type ConsentChoice,
+} from '@/hooks/useCookieConsent';
 
 const CookieConsent: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(CONSENT_STORAGE_KEY);
+    let stored = '';
+    try {
+      stored = window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) ?? '';
+    } catch {}
     if (!stored) {
       const t = window.setTimeout(() => {
         setVisible(true);
         requestAnimationFrame(() => setMounted(true));
       }, 600);
       return () => window.clearTimeout(t);
-    }
-    if (hasConsent()) {
-      loadAnalytics();
     }
   }, []);
 
@@ -33,11 +34,11 @@ const CookieConsent: React.FC = () => {
     };
   }, [visible]);
 
-  const persist = (value: 'accepted' | 'declined') => {
-    setConsent(value);
-    if (value === 'accepted') {
-      loadAnalytics();
-    }
+  // Persist the choice via the shared hook — that broadcasts to every
+  // consumer (ConsentedAnalytics, etc.) via a CustomEvent so analytics
+  // upgrades to full tracking on Accept without a page reload.
+  const persist = (value: ConsentChoice) => {
+    persistCookieConsent(value);
     setMounted(false);
     window.setTimeout(() => setVisible(false), 280);
   };
@@ -59,7 +60,7 @@ const CookieConsent: React.FC = () => {
         <p className="flex-1 min-w-0 text-[12px] md:text-sm lg:text-[15px] leading-[1.4] text-[#EAF4FF]/80 m-0">
           We use cookies to enhance your experience.{' '}
           <Link
-            to="/privacy-policy"
+            href="/privacy-policy"
             className="text-cyan-300 underline-offset-4 hover:underline"
           >
             Learn more
