@@ -143,10 +143,17 @@ export type CMSSitemapSection = { items: CMSSitemapEntry[]; excluded: { slug: st
 
 async function fetchJSON<T>(path: string, opts: RequestInit = {}): Promise<T | null> {
   try {
+    // A caller may pass `cache: 'no-store'` to bypass the Next Data Cache
+    // entirely (needed for the sitemaps — see getSitemap* — because Amplify's
+    // ISR/Data Cache does not reliably revalidate, so a deleted post/category
+    // would otherwise linger in the served XML). `cache` and `next.revalidate`
+    // are mutually exclusive in Next, so only default the revalidate window
+    // when the caller hasn't opted out of caching.
+    const noStore = opts.cache === 'no-store';
     const res = await fetch(`${API_URL}${path}`, {
       ...opts,
       headers: { 'Content-Type': 'application/json', ...(opts.headers ?? {}) },
-      next: { revalidate: 60, ...(opts as any).next },
+      ...(noStore ? {} : { next: { revalidate: 60, ...(opts as any).next } }),
     });
     if (!res.ok) return null;
     return (await res.json()) as T;
@@ -192,11 +199,17 @@ export const cms = {
 
   getSitemap: () => fetchJSON<CMSSitemap>('/api/public/sitemap'),
 
-  getSitemapPages: () => fetchJSON<CMSSitemapSection>('/api/public/sitemap/pages'),
+  // no-store: the sitemaps must reflect the CURRENT DB (deleted posts/categories
+  // gone immediately). The backend already caches these responses, and sitemaps
+  // are low-traffic, so bypassing the Next Data Cache here is cheap.
+  getSitemapPages: () =>
+    fetchJSON<CMSSitemapSection>('/api/public/sitemap/pages', { cache: 'no-store' }),
 
-  getSitemapPosts: () => fetchJSON<CMSSitemapSection>('/api/public/sitemap/posts'),
+  getSitemapPosts: () =>
+    fetchJSON<CMSSitemapSection>('/api/public/sitemap/posts', { cache: 'no-store' }),
 
-  getSitemapCategories: () => fetchJSON<CMSSitemapSection>('/api/public/sitemap/categories'),
+  getSitemapCategories: () =>
+    fetchJSON<CMSSitemapSection>('/api/public/sitemap/categories', { cache: 'no-store' }),
 
   listCategories: () => fetchJSON<{ items: CMSCategory[] }>('/api/public/categories'),
 
@@ -218,7 +231,7 @@ export const cms = {
 
   /**
    * Ensure a CMS Page record exists for a website route so it shows up in
-   * spay-cms and becomes SEO-editable. Idempotent on the server — never
+   * leo-cms and becomes SEO-editable. Idempotent on the server — never
    * overwrites SEO an editor has set. Fire-and-forget: failures (CMS down,
    * registration disabled) never block rendering.
    */

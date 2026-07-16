@@ -6,7 +6,10 @@
 import { cms } from '@/lib/cms';
 import { buildUrlset, XML_HEADERS } from '@/lib/sitemap';
 
-export const revalidate = 60;
+// Always render fresh so a deleted/unpublished post disappears from the sitemap
+// immediately. Amplify's ISR/Data Cache doesn't reliably revalidate, which would
+// otherwise leave deleted posts in the served XML. (getSitemapPosts is no-store.)
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const data = await cms.getSitemapPosts();

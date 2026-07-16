@@ -3,7 +3,7 @@
 import { useEffect, type MutableRefObject } from "react";
 
 /**
- * Client-side inline-editing runtime for the spay-cms live preview.
+ * Client-side inline-editing runtime for the leo-cms live preview.
  *
  * It decorates DOM nodes that the section components tagged with `data-cms-*`
  * attributes so an editor can change text/images/links directly in the preview
@@ -24,8 +24,8 @@ import { useEffect, type MutableRefObject } from "react";
  *  - `data-cms-href="hero.ctaUrl"`               → link whose URL is editable
  *
  * Messages posted to the parent (CMS):
- *  - { type: 'spay:preview-edit', path, value }       (text / link URL)
- *  - { type: 'spay:preview-pick-image', path }        (open the media picker)
+ *  - { type: 'leo:preview-edit', path, value }       (text / link URL)
+ *  - { type: 'leo:preview-pick-image', path }        (open the media picker)
  */
 export function useInlineEditRuntime(opts: {
   enabled: boolean;
@@ -142,7 +142,7 @@ export function useInlineEditRuntime(opts: {
       const onBlur = () => {
         const value = readEditableText(el);
         if (value !== valueAtFocus) {
-          post({ type: "spay:preview-edit", path, value });
+          post({ type: "leo:preview-edit", path, value });
         }
         editingFieldRef.current = false;
         onFieldBlur();
@@ -185,7 +185,7 @@ export function useInlineEditRuntime(opts: {
       btn.setAttribute("data-cms-overlay", "");
       btn.type = "button";
       btn.textContent = "Change image";
-      const onClick = () => post({ type: "spay:preview-pick-image", path });
+      const onClick = () => post({ type: "leo:preview-pick-image", path });
       btn.addEventListener("click", onClick);
       el.appendChild(btn);
       cleanups.push(() => {
@@ -214,7 +214,7 @@ export function useInlineEditRuntime(opts: {
         e.preventDefault();
         e.stopPropagation();
         openUrlPopover(btn, el.getAttribute("href") ?? "", (val) =>
-          post({ type: "spay:preview-edit", path, value: val }),
+          post({ type: "leo:preview-edit", path, value: val }),
         );
       };
       btn.addEventListener("click", onClick);

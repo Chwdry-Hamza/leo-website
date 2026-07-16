@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 import { useInlineEditRuntime } from "@/components/InlineEditRuntime";
 
 /**
- * Shared hooks for spay-cms live preview wiring.
+ * Shared hooks for leo-cms live preview wiring.
  *
  * `useEditablePreview` is the primary entry point: feed it the initial
  * server-resolved content and a `resolve(raw)` function that deep-merges saved
@@ -42,20 +42,20 @@ export function useEditablePreview<T>(
     const onMessage = (e: MessageEvent) => {
       const d = e.data;
       if (!d || typeof d !== "object") return;
-      if (d.type === "spay:preview-content") {
+      if (d.type === "leo:preview-content") {
         const resolved = resolve(d.sections);
         if (editingFieldRef.current) {
           pendingRef.current = resolved; // apply once the field blurs
         } else {
           setContent(resolved);
         }
-      } else if (d.type === "spay:preview-edit-mode") {
+      } else if (d.type === "leo:preview-edit-mode") {
         setEditing(!!d.editing);
       }
     };
     window.addEventListener("message", onMessage);
     try {
-      window.parent?.postMessage({ type: "spay:preview-ready" }, "*");
+      window.parent?.postMessage({ type: "leo:preview-ready" }, "*");
     } catch {
       /* not embedded */
     }
@@ -89,13 +89,13 @@ export function usePreviewEditMode(): { isPreview: boolean; editing: boolean } {
   useEffect(() => {
     if (!isPreview) return;
     const onMsg = (e: MessageEvent) => {
-      if (e.data && typeof e.data === "object" && e.data.type === "spay:preview-edit-mode") {
+      if (e.data && typeof e.data === "object" && e.data.type === "leo:preview-edit-mode") {
         setEditing(!!e.data.editing);
       }
     };
     window.addEventListener("message", onMsg);
     try {
-      window.parent?.postMessage({ type: "spay:preview-ready" }, "*");
+      window.parent?.postMessage({ type: "leo:preview-ready" }, "*");
     } catch {
       /* not embedded */
     }

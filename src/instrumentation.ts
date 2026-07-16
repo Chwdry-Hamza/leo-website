@@ -2,7 +2,7 @@
  * Next.js instrumentation hook — runs ONCE on server boot (Node runtime only).
  *
  * For every hand-built static route, fire `cms.ensurePageRegistered()` so the
- * page appears in spay-cms / leo-cms immediately as SEO-editable, without
+ * page appears in leo-cms / leo-cms immediately as SEO-editable, without
  * waiting for the first visitor. The CMS backend uses `$setOnInsert` so this
  * is idempotent — it never overwrites SEO that an admin has already set.
  *

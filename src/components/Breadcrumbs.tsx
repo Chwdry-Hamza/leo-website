@@ -50,7 +50,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/*
-        Pill-bar breadcrumb (styled to match the spay-website design): a rounded,
+        Pill-bar breadcrumb (styled to match the leo-website design): a rounded,
         translucent bar with a home icon, chevron separators, muted links that
         brighten on hover, and the current page shown in an accent pill. Uses
         Leo's cyan accent to stay on-brand.

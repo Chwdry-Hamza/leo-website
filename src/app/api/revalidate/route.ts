@@ -4,15 +4,15 @@ import { revalidatePath } from 'next/cache';
 const SECRET = process.env.LEO_REVALIDATE_SECRET ?? '';
 
 /**
- * Called by spay-backend after a content change.
+ * Called by leo-backend after a content change.
  * Body: { paths: string[] }
- * Header: x-spay-secret must match LEO_REVALIDATE_SECRET
- *   (spay-backend's revalidate service sends `x-spay-secret`; the env var
+ * Header: x-leo-secret must match LEO_REVALIDATE_SECRET
+ *   (leo-backend's revalidate service sends `x-leo-secret`; the env var
  *    name `LEO_REVALIDATE_SECRET` is kept for backwards compatibility — its
- *    value must equal spay-backend's WEBSITE_REVALIDATE_SECRET.)
+ *    value must equal leo-backend's WEBSITE_REVALIDATE_SECRET.)
  */
 export async function POST(req: NextRequest) {
-  const provided = req.headers.get('x-spay-secret') ?? '';
+  const provided = req.headers.get('x-leo-secret') ?? '';
   if (!SECRET || provided !== SECRET) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
@@ -51,6 +51,6 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    info: 'POST { paths: string[] } with x-spay-secret header to revalidate.',
+    info: 'POST { paths: string[] } with x-leo-secret header to revalidate.',
   });
 }

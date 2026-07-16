@@ -4,7 +4,9 @@
 import { cms } from '@/lib/cms';
 import { buildUrlset, XML_HEADERS } from '@/lib/sitemap';
 
-export const revalidate = 60;
+// Always render fresh so a deleted category (or one whose last published post was
+// removed) disappears from the sitemap immediately. See sitemap-posts.xml.
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const data = await cms.getSitemapCategories();

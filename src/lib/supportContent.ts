@@ -3,7 +3,7 @@
  *
  * Card layout + icons stay in the page component; this defines the text /
  * email / phone / hours the CMS can edit. Mirrors the shape of
- * spay-cms/leo-cms/src/lib/supportContent.ts. KEEP SHAPES IN SYNC.
+ * leo-cms/leo-cms/src/lib/supportContent.ts. KEEP SHAPES IN SYNC.
  */
 export type SupportContent = {
   header: {

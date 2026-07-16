@@ -3,17 +3,24 @@
  *   - status === 'published'
  *   - seo.noindex !== true
  *
- * The home page ('/') is intentionally excluded here because it's already
- * in sitemap-static.xml. We only emit a URL once across the whole index.
+ * The home page and every hand-built static route (about, support, legal…) are
+ * excluded here because they live in sitemap-static.xml, so each URL appears in
+ * exactly one sub-sitemap. What remains are genuinely CMS-authored pages.
  */
 import { cms } from '@/lib/cms';
 import { buildUrlset, XML_HEADERS } from '@/lib/sitemap';
+import { STATIC_SLUGS } from '@/lib/static-routes';
 
-export const revalidate = 60;
+// Always render fresh so a deleted/unpublished page disappears from the sitemap
+// immediately. See sitemap-posts.xml.
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const data = await cms.getSitemapPages();
-  const items = (data?.items ?? []).filter((p) => p.slug !== '/');
+  // STATIC_SLUGS already contains '/', so this also drops the home page.
+  const items = (data?.items ?? []).filter(
+    (p) => !STATIC_SLUGS.has(p.slug.startsWith('/') ? p.slug : `/${p.slug}`),
+  );
 
   const xml = buildUrlset(
     items.map((p) => ({
