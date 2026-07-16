@@ -223,7 +223,7 @@ export const cms = {
    * registration disabled) never block rendering.
    */
   ensurePageRegistered: async (slug: string, title: string, template?: string): Promise<void> => {
-    const secret = process.env.SPAY_REGISTER_SECRET || '';
+    const secret = process.env.LEO_REGISTER_SECRET || '';
     try {
       await fetch(`${API_URL}/api/public/pages/register`, {
         method: 'POST',

@@ -19,7 +19,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - env | grep -e '^LEO_API_URL=' -e '^LEO_REVALIDATE_SECRET=' -e '^SPAY_REGISTER_SECRET=' -e '^NEXT_PUBLIC_SITE_URL=' >> .env.production || true
+        - env | grep -e '^LEO_API_URL=' -e '^LEO_REVALIDATE_SECRET=' -e '^LEO_REGISTER_SECRET=' -e '^NEXT_PUBLIC_SITE_URL=' >> .env.production || true
         - npm run build
   artifacts:
     baseDirectory: .next
