@@ -237,9 +237,11 @@ export const HOME_CONTENT_DEFAULTS: HomeContent = {
     tagline: 'THE MONEY APP',
     links: [
       { label: 'About LEO',             href: '/about' },
+      { label: 'Support',               href: '/support' },
       { label: 'Privacy Policy',        href: '/privacy-policy' },
       { label: 'Card Terms',            href: '/card-terms' },
       { label: 'Prohibited Activities', href: '/prohibited-activities' },
+      { label: 'E-Sign Consent',        href: '/e-sign-consent' },
     ],
     appStoreUrl: '#app-store',
     playStoreUrl: '#google-play',
