@@ -1,0 +1,31 @@
+# AWS Amplify Hosting build spec.
+#
+# Why this file exists: Amplify exposes the console's environment variables to
+# the BUILD only — they are NOT injected into the Next.js SSR Lambda at runtime.
+# `NEXT_PUBLIC_*` survives because Next inlines it at build time, but a
+# server-only var like LEO_API_URL is simply missing at runtime, so
+# `process.env.LEO_API_URL ?? 'http://localhost:4000'` silently falls back to
+# localhost and every CMS fetch returns null (empty blog, 404 on posts/pages).
+#
+# Fix: write the runtime vars into .env.production before `next build`. Next
+# loads that file on the server at runtime, so the Lambda gets the real values.
+# Add any NEW server-side env var to the grep list below, or it won't reach
+# production.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - env | grep -e '^LEO_API_URL=' -e '^LEO_REVALIDATE_SECRET=' -e '^SPAY_REGISTER_SECRET=' -e '^NEXT_PUBLIC_SITE_URL=' >> .env.production || true
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
