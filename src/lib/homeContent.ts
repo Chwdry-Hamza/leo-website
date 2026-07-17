@@ -95,10 +95,6 @@ export type HomeContent = {
     ctaLabel: string;
     ctaUrl: string;
   };
-  collaborations: {
-    headingBefore: string;
-    headingAccent: string;
-  };
   footer: {
     logoSrc: string;
     tagline: string;
@@ -200,17 +196,17 @@ export const HOME_CONTENT_DEFAULTS: HomeContent = {
     titleAccent: 'INSTANTLY,',
     titleLine3: 'IN ANY CURRENCY.',
     subtitle:
-      'Send to a Visa or Mastercard, a SEPA bank account, or a crypto wallet — every transfer clears in seconds, not days. Transparent fees, real-time rates, and bank-grade encryption on every move.',
+      'Send to a Visa or Mastercard, or a crypto wallet — every transfer clears in seconds, not days. Transparent fees, real-time rates, and encryption in transit and at rest on every move.',
     mockupImage: '/paymentMobilee.png',
     mockupAlt: 'Transfer preview',
   },
   crypto: {
     eyebrow: 'Your crypto, simplified',
     titleLine1: 'BUY, HOLD, SWAP,',
-    titleAccent: 'GROW',
+    titleAccent: 'MANAGE',
     titleLine3: 'YOUR ENTIRE PORTFOLIO',
     subtitle:
-      'Purchase, sell, spend, and hold digital assets with institutional-grade security — all from the convenience of your pocket. Track live prices, swap between fiat and crypto in a single tap, and put your idle balance to work with effortless staking. One unified wallet for every move you make, on-chain or off.',
+      'Purchase, sell, spend, and hold digital assets — all from the convenience of your pocket. Track live prices and swap between fiat and crypto in a single tap. One unified wallet for every move you make, on-chain or off.',
     mockupImage: '/mobilePaymentt.png',
     mockupAlt: 'Crypto preview',
   },
@@ -224,13 +220,9 @@ export const HOME_CONTENT_DEFAULTS: HomeContent = {
     titleWhite: 'BUILT FOR ',
     titleAccent: "WHAT'S NEXT.",
     subtitle:
-      'The wait for finance that actually keeps up is over. Send, spend, stake, swap — one app, zero friction, always-on. Built for how you live now, ready for whatever comes next.',
+      'The wait for finance that actually keeps up is over. Send, spend, swap — one app, zero friction, always-on. Built for how you live now, ready for whatever comes next.',
     ctaLabel: 'GET LEO APP',
     ctaUrl: 'https://apps.apple.com/app/sicash',
-  },
-  collaborations: {
-    headingBefore: 'OUR ',
-    headingAccent: 'COLLABORATIONS',
   },
   footer: {
     logoSrc: '/leoLogoooo.png',

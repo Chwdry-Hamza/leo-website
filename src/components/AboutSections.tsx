@@ -77,26 +77,29 @@ export default function AboutSections({ initialContent }: { initialContent: Abou
         </div>
       </section>
 
-      {/* Partners */}
-      <section className="relative pb-24 md:pb-32 bg-[#0a1527]">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 text-center">
-          <h2 className="font-display font-bold text-2xl md:text-4xl mb-10 tracking-[-0.01em]">
-            <span className="text-white" data-cms-field="collaborations.headingBefore">{collaborations.headingBefore}</span>
-            <span className="text-cyan-300" data-cms-field="collaborations.headingHighlight">{collaborations.headingHighlight}</span>
-          </h2>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-5 md:gap-x-12 md:gap-y-6">
-            {partners.map((p, i) => (
-              <span
-                key={`${p}-${i}`}
-                data-cms-field={`collaborations.partners.${i}`}
-                className="font-display font-bold text-base md:text-lg text-fg-2/80 tracking-wider uppercase"
-              >
-                {p}
-              </span>
-            ))}
+      {/* Partners — hidden while no partner is approved for naming, so the
+          heading never renders above an empty row. */}
+      {partners.length > 0 && (
+        <section className="relative pb-24 md:pb-32 bg-[#0a1527]">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 text-center">
+            <h2 className="font-display font-bold text-2xl md:text-4xl mb-10 tracking-[-0.01em]">
+              <span className="text-white" data-cms-field="collaborations.headingBefore">{collaborations.headingBefore}</span>
+              <span className="text-cyan-300" data-cms-field="collaborations.headingHighlight">{collaborations.headingHighlight}</span>
+            </h2>
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-5 md:gap-x-12 md:gap-y-6">
+              {partners.map((p, i) => (
+                <span
+                  key={`${p}-${i}`}
+                  data-cms-field={`collaborations.partners.${i}`}
+                  className="font-display font-bold text-base md:text-lg text-fg-2/80 tracking-wider uppercase"
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

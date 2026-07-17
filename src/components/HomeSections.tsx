@@ -9,7 +9,6 @@ import TransferSection from './TransferSection';
 import CryptoSection from './CryptoSection';
 import FeaturesGrid from './FeaturesGrid';
 import JoinUsSection from './JoinUsSection';
-import CollaborationsSection from './CollaborationsSection';
 import CryptoTicker from './CryptoTicker';
 import FooterView, { type FooterLink } from './FooterView';
 import { type FooterBlogLink } from './FooterBlogsDropdown';
@@ -54,7 +53,6 @@ export default function HomeSections({
       <CryptoSection content={content.crypto} />
       <FeaturesGrid content={content.featuresGrid} />
       <JoinUsSection content={content.joinUs} />
-      <CollaborationsSection content={content.collaborations} />
       <FooterView
         content={content.footer}
         renderedLinks={renderedFooterLinks}

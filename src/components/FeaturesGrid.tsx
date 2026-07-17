@@ -19,12 +19,6 @@ const Avatar: React.FC<AvatarProps> = ({ initial, bg, size = 44 }) => (
   </div>
 );
 
-const Pill: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/[0.04] border border-[rgba(111,227,255,0.22)] font-mono text-[11px] text-[#EAF4FF]/85 tracking-wide whitespace-nowrap">
-    {children}
-  </span>
-);
-
 const SplitIcon: React.FC = () => (
   <svg
     viewBox="0 0 24 24"
@@ -38,22 +32,6 @@ const SplitIcon: React.FC = () => (
     <path d="M3 6h5l4 6 4-6h5" />
     <path d="M3 18h5l4-6" />
     <path d="M16 18h5" />
-  </svg>
-);
-
-const BusinessIcon: React.FC = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.7"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-5 h-5 text-cyan-300"
-  >
-    <rect x="3" y="7" width="18" height="13" rx="2" />
-    <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
-    <path d="M3 12h18" />
   </svg>
 );
 
@@ -110,8 +88,8 @@ const FeaturesGrid: React.FC<FeaturesGridProps> = ({ content }) => {
             <p className={eyebrow}>Send</p>
             <h3 className={h3Cls}>Send to any wallet, instantly.</h3>
             <p className={`${bodyCls} max-w-[380px]`}>
-              Push USDT to a friend, BTC across chains, or fiat to a bank —
-              every transfer settles in seconds, not days.
+              Push USDT to a friend or send across chains — every transfer
+              settles in seconds, not days.
             </p>
 
             <div className="mt-auto pt-10 flex items-center gap-4">
@@ -131,38 +109,6 @@ const FeaturesGrid: React.FC<FeaturesGridProps> = ({ content }) => {
                 bg="linear-gradient(135deg,#FFD18A,#E89B40)"
               />
             </div>
-          </article>
-
-          {/* STAT TILE — GROW */}
-          <article
-            className={`${tileBase} flex flex-col`}
-            style={{
-              background:
-                'linear-gradient(160deg, rgba(78,203,255,0.18), rgba(14,24,48,0.6) 60%)',
-            }}
-          >
-            <p className={eyebrow}>Grow</p>
-            <div className="flex items-baseline gap-1.5 mb-3">
-              <span
-                className="font-display font-bold leading-none tracking-[-0.04em]"
-                style={{
-                  fontSize: 76,
-                  background: 'linear-gradient(180deg, #EAF4FF, #6FE3FF)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                5.0
-              </span>
-              <span className="font-display font-semibold text-[16px] text-[#EAF4FF]/85">
-                % APY
-              </span>
-            </div>
-            <p className={bodyCls}>
-              Stake idle balances and earn yield around the clock — no
-              lockups, no minimums.
-            </p>
           </article>
 
           {/* CARD TILE — SPEND */}
@@ -218,39 +164,20 @@ const FeaturesGrid: React.FC<FeaturesGridProps> = ({ content }) => {
             </div>
           </article>
 
-          {/* BUSINESS TILE */}
-          <article className={`${tileBase} flex flex-col`}>
-            <div className="w-10 h-10 rounded-[10px] bg-cyan-300/15 border border-cyan-300/30 inline-flex items-center justify-center mb-4">
-              <BusinessIcon />
-            </div>
-            <h3 className={h3Cls}>Accept crypto, accept cards.</h3>
-            <p className={`${bodyCls} mb-5`}>
-              Stablecoin checkouts, on-chain invoices, and built-in POS — with
-              same-day payouts to your wallet or bank.
-            </p>
-            <div className="mt-auto flex flex-wrap gap-2">
-              <Pill>Stripe</Pill>
-              <Pill>Shopify</Pill>
-              <Pill>Coinbase</Pill>
-            </div>
-          </article>
-
-          {/* PROTECT TILE — span 2 */}
-          <article className={`${tileBase} desktop:col-span-2`}>
+          {/* PROTECT TILE — spans the full row (GROW + BUSINESS tiles were
+              removed for compliance, so col-span-2 would leave a 2-col gap). */}
+          <article className={`${tileBase} desktop:col-span-4`}>
             <div className="flex flex-col desktop:flex-row gap-6 desktop:gap-8 h-full">
               <div className="flex-1 flex flex-col">
                 <p className={eyebrow}>Protect</p>
                 <h3 className={h3Cls}>Security you can feel.</h3>
-                <p className={`${bodyCls} mb-5 max-w-[460px]`}>
-                  FDIC insured up to $250K on fiat. Multi-sig cold storage on
-                  every wallet. Biometric login and 24/7 anomaly detection on
-                  every move.
+                {/* Compliance-approved wording only. Do NOT re-add insurance
+                    ("FDIC"), certification ("SOC 2"), or custody claims without
+                    written sign-off from compliance. */}
+                <p className={`${bodyCls} max-w-[460px]`}>
+                  We apply industry-standard security practices, including
+                  encryption in transit and at rest.
                 </p>
-                <div className="mt-auto flex flex-wrap gap-2">
-                  <Pill>FDIC insured</Pill>
-                  <Pill>Multi-sig cold storage</Pill>
-                  <Pill>SOC 2 Type II</Pill>
-                </div>
               </div>
               <div className="hidden desktop:flex shrink-0 w-[160px] h-[160px] items-center justify-center self-center relative">
                 <div className="absolute inset-0 rounded-full border border-dashed border-cyan-300/35" />

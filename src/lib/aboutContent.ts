@@ -17,7 +17,10 @@ export const ABOUT_CONTENT_DEFAULTS: AboutContent = {
     headingWhite: 'ABOUT',
     headingAccent: 'LEO',
     intro:
-      "LEO is the money app where fiat and crypto live side by side. Send, spend, split, and save — all from one quietly beautiful app. Free to start, honest at every turn, and built to last. We hold the highest standards of regulatory compliance and use bank-grade security to protect your funds.",
+      // Compliance-approved wording. Do NOT re-add licensing/regulatory status
+      // claims ("highest standards of regulatory compliance", "bank-grade")
+      // without written sign-off from compliance.
+      'LEO is the money app where fiat and crypto live side by side. Send, spend, split, and save — all from one quietly beautiful app. Free to start, honest at every turn, and built to last. We apply industry-standard security practices, including encryption in transit and at rest.',
   },
   mission: {
     heading: 'MISSION',
@@ -32,7 +35,10 @@ export const ABOUT_CONTENT_DEFAULTS: AboutContent = {
   collaborations: {
     headingBefore: 'OUR ',
     headingHighlight: 'COLLABORATIONS',
-    partners: ['BitGo', 'FENIGE', 'INTERCOM', 'PLAID', 'QUICKO', 'onfido', 'Verestro', 'YAPILY', 'BINARYX'],
+    // Empty on purpose: LEO may only name a partner with written approval from
+    // compliance. The section hides itself while this list is empty — see
+    // AboutSections. Do NOT add a name here without that sign-off.
+    partners: [],
   },
 };
 
